@@ -1,0 +1,33 @@
+{{ define "main" }}
+<div class="home-hero">
+    <h1 class="glitch" data-text="{{ .Site.Title }}">{{ .Site.Title }}</h1>
+    <p class="hero-subtitle">{{ .Site.Params.description }}</p>
+</div>
+
+<section class="recent-posts">
+    <h2 class="section-title">&gt; Recent Posts</h2>
+    <div class="posts-grid">
+        {{ range first 6 (where .Site.RegularPages "Type" "posts") }}
+        <article class="post-card">
+            <div class="post-meta">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+                {{ if .Params.tags }}
+                <div class="tags">
+                    {{ range .Params.tags }}
+                    <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">#{{ . }}</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </div>
+            <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+            <p class="post-summary">{{ .Summary }}</p>
+            <a href="{{ .Permalink }}" class="read-more">Read more →</a>
+        </article>
+        {{ end }}
+    </div>
+</section>
+
+<div class="view-all">
+    <a href="{{ "/posts" | relURL }}" class="btn-primary">View All Posts</a>
+</div>
+{{ end }}

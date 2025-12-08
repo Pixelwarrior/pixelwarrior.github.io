@@ -1,0 +1,10 @@
+<header>
+    <nav>
+        <a href="{{ .Site.BaseURL }}" class="logo">{{ .Site.Title }}</a>
+        <ul class="nav-links">
+            <li><a href="{{ .Site.BaseURL }}">Home</a></li>
+            <li><a href="{{ "posts" | relURL }}">Posts</a></li>
+            <li><a href="{{ "about" | relURL }}">About</a></li>
+        </ul>
+    </nav>
+</header>

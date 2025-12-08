@@ -1,0 +1,11 @@
+name = "CyberTech"
+license = "MIT"
+description = "A dark cybersecurity-focused theme with syntax highlighting and modern features"
+homepage = "https://github.com/yad0/cybertech"
+tags = ["dark", "cybersecurity", "technical", "blog", "terminal"]
+features = ["syntax-highlighting", "search", "tags", "responsive"]
+min_version = "0.100.0"
+
+[author]
+  name = "yad0"
+  homepage = "https://yad0.io"

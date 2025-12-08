@@ -1,0 +1,30 @@
+{{ define "main" }}
+    {{ if .IsHome }}
+        <section class="intro">
+            <h1>Welcome, Operator.</h1>
+            <p>{{ .Site.Params.description }}</p>
+        </section>
+    {{ else }}
+        <h1>{{ .Title }}</h1>
+    {{ end }}
+
+    <ul class="post-list">
+        {{ range .Paginator.Pages }}
+        <li class="post-item">
+            <h2 class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+            <div class="post-meta">
+                <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+                {{ if .Params.categories }}
+                | <span>[{{ range .Params.categories }}{{ . }}{{ end }}]</span>
+                {{ end }}
+            </div>
+            <div class="post-summary">
+                {{ .Summary }}
+            </div>
+            <a href="{{ .Permalink }}" class="read-more">Read Protocol >></a>
+        </li>
+        {{ end }}
+    </ul>
+
+    {{ template "_internal/pagination.html" . }}
+{{ end }}

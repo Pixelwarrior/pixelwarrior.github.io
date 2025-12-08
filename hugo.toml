@@ -1,0 +1,26 @@
+baseURL = 'https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPOSITORY_NAME>/'
+languageCode = 'en-us'
+title = 'yad0::security'
+theme = 'cybertech'
+
+[params]
+  description = 'Security research, vulnerability analysis, and exploitation techniques'
+  author = 'yad0'
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = false
+    noClasses = false
+    style = 'monokai'
+    tabWidth = 4
+
+[taxonomies]
+  tag = 'tags'
+  category = 'categories'
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']

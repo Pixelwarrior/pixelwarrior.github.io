@@ -1,0 +1,66 @@
+/* Custom Cyber-Punk Syntax Highlighting */
+/* Overriding standard Chroma classes for a neon/matrix vibe */
+
+/* Background - dark distinct from body */
+.chroma { color: #c9d1d9; background-color: #0d1117; display: block; }
+
+/* Line Numbers */
+.chroma .lnt { color: #484f58; margin-right: 0.5em; }
+
+/* Keywords (if, else, return) - Pink/Purple */
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kp, .chroma .kr, .chroma .kt { color: #ff7b72; }
+
+/* Functions & Methods - Blue/Purple */
+.chroma .nf, .chroma .fm { color: #d2a8ff; font-weight: bold; }
+
+/* Strings - Cyber Green */
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd, .chroma .s2, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .s1, .chroma .ss { color: #00ff41; }
+
+/* Numbers & Literals - Cyan/Blue */
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo { color: #79c0ff; }
+
+/* Comments - Dimmed Gray */
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs, .chroma .cp, .chroma .cpf { color: #8b949e; font-style: italic; }
+
+/* Operators (=, +, -) */
+.chroma .o, .chroma .ow { color: #ff7b72; }
+
+/* Attributes / Classes */
+.chroma .na, .chroma .nc, .chroma .nd, .chroma .ne, .chroma .nx, .chroma .nt { color: #79c0ff; }
+
+/* Errors */
+.chroma .err { color: #ffa198; background-color: #490202; }
+
+/* Diff Added/Removed */
+.chroma .gd { color: #ffa198; background-color: #490202; }
+.chroma .gi { color: #56d364; background-color: #0f5323; }
+
+/* Highlighted Line */
+.chroma .hl { background-color: #1f6feb40; display: block; width: 100%; }
+
+/* Scrollbar and Container for code blocks */
+.chroma {
+    color: #c9d1d9; 
+    background-color: #0d1117; 
+    display: block;
+    position: relative; /* For Copy Button */
+    overflow-x: auto;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* Inline Line Numbers */
+.chroma .ln {
+    color: #484f58;
+    margin-right: 1em;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none; /* Prevents interaction */
+}
+
+/* Remove default Pre margin inside chroma container if exists */
+.chroma pre { margin: 0; padding: 0; }
