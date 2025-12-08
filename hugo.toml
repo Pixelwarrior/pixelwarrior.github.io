@@ -1,5 +1,5 @@
 # Base configuration for GitHub Pages deployment
-baseURL = 'https://pixelwarrior.github.io/yad0.github.io/'
+baseURL = 'https://pixelwarrior.github.io/'
 languageCode = 'en-us'
 title = 'yad0::security'
 theme = 'cybertech'
