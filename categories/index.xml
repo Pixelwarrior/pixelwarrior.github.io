@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on yad0::security</title>
+    <link>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/categories/</link>
+    <description>Recent content in Categories on yad0::security</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 04 Dec 2025 22:10:26 -0600</lastBuildDate>
+    <atom:link href="https://<YOUR_GITHUB_USERNAME>.github.io/%3CYOUR_REPOSITORY_NAME%3E/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Security</title>
+      <link>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/categories/web-security/</link>
+      <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
+      <guid>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/categories/web-security/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

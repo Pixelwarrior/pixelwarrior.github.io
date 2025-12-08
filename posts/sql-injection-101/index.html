@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Injection 101: Understanding the Basics | yad0::security</title>
+<meta name="description" content="Security research, vulnerability analysis, and exploitation techniques">
+
+<link rel="stylesheet" href="/%3cYOUR_REPOSITORY_NAME%3e/css/style.css">
+<link rel="stylesheet" href="/%3cYOUR_REPOSITORY_NAME%3e/css/syntax.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+    <nav>
+        <a href="https://%3cYOUR_GITHUB_USERNAME%3e.github.io/%3CYOUR_REPOSITORY_NAME%3E/" class="logo">yad0::security</a>
+        <ul class="nav-links">
+            <li><a href="https://%3cYOUR_GITHUB_USERNAME%3e.github.io/%3CYOUR_REPOSITORY_NAME%3E/">Home</a></li>
+            <li><a href="/%3cYOUR_REPOSITORY_NAME%3e/posts">Posts</a></li>
+            <li><a href="/%3cYOUR_REPOSITORY_NAME%3e/about">About</a></li>
+        </ul>
+    </nav>
+</header>
+        <main>
+            
+<article class="post">
+    <header class="post-header">
+        <h1>SQL Injection 101: Understanding the Basics</h1>
+        <div class="post-meta">
+            <span>Dec 4, 2025</span>
+            | <span>Authored by yad0</span>
+            
+            | Tags: 
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/web-security">#web-security</a>
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/sql-injection">#sql-injection</a>
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/vulnerabilities">#vulnerabilities</a>
+            
+            <a href="/%3cYOUR_REPOSITORY_NAME%3e/tags/tutorial">#tutorial</a>
+            
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+        <p>SQL Injection (SQLi) remains one of the most critical web application vulnerabilities, consistently ranking in the OWASP Top 10. In this post, we&rsquo;ll explore what SQL injection is, how it works, and how to protect against it.</p>
+<h2 id="what-is-sql-injection">What is SQL Injection?</h2>
+<p>SQL Injection is a code injection technique that exploits vulnerabilities in an application&rsquo;s database layer. Attackers can manipulate SQL queries by inserting malicious SQL code through user input fields.</p>
+<h2 id="how-does-it-work">How Does It Work?</h2>
+<p>Consider a simple login form that constructs an SQL query like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;password123&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>If the application doesn&rsquo;t properly sanitize input, an attacker could enter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Username: admin&#39; --
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Password: (anything)
+</span></span></code></pre></div><p>This transforms the query into:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="w"> </span><span class="c1">-- &#39; AND password = &#39;anything&#39;;
+</span></span></span></code></pre></div><p>The <code>--</code> comments out the rest of the query, effectively bypassing authentication!</p>
+<h2 id="types-of-sql-injection">Types of SQL Injection</h2>
+<h3 id="1-classic-sqli-in-band">1. Classic SQLi (In-Band)</h3>
+<p>The attacker uses the same channel to inject SQL code and retrieve results.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># Vulnerable Python code</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;SELECT * FROM users WHERE username = &#39;</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&#39;&#34;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="2-blind-sqli">2. Blind SQLi</h3>
+<p>The attacker doesn&rsquo;t see direct output but can infer information based on application behavior.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">1</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">-- Returns normally
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">1</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="c1">-- Returns nothing
+</span></span></span></code></pre></div><h3 id="3-out-of-band-sqli">3. Out-of-Band SQLi</h3>
+<p>Uses different channels for injection and data retrieval (e.g., DNS or HTTP requests).</p>
+<h2 id="real-world-example-union-based-attack">Real-World Example: Union-Based Attack</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="ln">1</span><span class="cl"><span class="s1">&#39; UNION SELECT null, username, password FROM users --
+</span></span></span></code></pre></div><p>This technique combines results from the original query with a malicious query to extract data from other tables.</p>
+<h2 id="prevention-techniques">Prevention Techniques</h2>
+<h3 id="1-parameterized-queries-prepared-statements">1. Parameterized Queries (Prepared Statements)</h3>
+<p><strong>Best Practice:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># Secure Python code using parameterized queries</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM users WHERE username = ?&#34;</span><span class="p">,</span> <span class="p">(</span><span class="n">username</span><span class="p">,))</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Secure PHP code with PDO
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM users WHERE username = :username&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">([</span><span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="nv">$username</span><span class="p">]);</span>
+</span></span></code></pre></div><h3 id="2-input-validation">2. Input Validation</h3>
+<p>Whitelist allowed characters and validate input length:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">function</span> <span class="nx">validateUsername</span><span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="kr">const</span> <span class="nx">regex</span> <span class="o">=</span> <span class="sr">/^[a-zA-Z0-9_-]{3,20}$/</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="k">return</span> <span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">username</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="3-least-privilege-principle">3. Least Privilege Principle</h3>
+<p>Database users should only have permissions they need:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">-- Don&#39;t do this
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;webapp&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w"></span><span class="c1">-- Do this instead
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">mydb</span><span class="p">.</span><span class="n">users</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;webapp&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><h3 id="4-web-application-firewalls-waf">4. Web Application Firewalls (WAF)</h3>
+<p>Deploy WAFs to detect and block common SQL injection patterns.</p>
+<h2 id="testing-for-sql-injection">Testing for SQL Injection</h2>
+<p><strong>Warning:</strong> Only test applications you have permission to test!</p>
+<h3 id="basic-test-payloads">Basic Test Payloads</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">&#39;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">&#39;&#39;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">`
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">``
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">,
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">&#34;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">&#34;&#34;
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">/
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">//
+</span></span><span class="line"><span class="ln">10</span><span class="cl">\
+</span></span><span class="line"><span class="ln">11</span><span class="cl">\\
+</span></span><span class="line"><span class="ln">12</span><span class="cl">;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">&#39; OR &#39;1
+</span></span><span class="line"><span class="ln">14</span><span class="cl">&#39; OR 1 -- -
+</span></span><span class="line"><span class="ln">15</span><span class="cl">&#34; OR &#34;&#34; = &#34;
+</span></span><span class="line"><span class="ln">16</span><span class="cl">&#34; OR 1 = 1 -- -
+</span></span><span class="line"><span class="ln">17</span><span class="cl">&#39; OR &#39;&#39; = &#39;
+</span></span></code></pre></div><h3 id="tools-for-testing">Tools for Testing</h3>
+<ul>
+<li><strong>SQLMap</strong>: Automated SQL injection tool</li>
+<li><strong>Burp Suite</strong>: Web security testing platform</li>
+<li><strong>OWASP ZAP</strong>: Open-source web app scanner</li>
+</ul>
+<h2 id="sqlmap-example">SQLMap Example</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># Basic SQLMap usage</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">sqlmap -u <span class="s2">&#34;http://example.com/page?id=1&#34;</span> --dbs
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"># With authentication</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">sqlmap -u <span class="s2">&#34;http://example.com/page?id=1&#34;</span> --cookie<span class="o">=</span><span class="s2">&#34;SESSIONID=abc123&#34;</span> --dbs
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"># Dump specific database</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">sqlmap -u <span class="s2">&#34;http://example.com/page?id=1&#34;</span> -D mydb --tables
+</span></span></code></pre></div><h2 id="key-takeaways">Key Takeaways</h2>
+<ol>
+<li><strong>Never trust user input</strong> - Always validate and sanitize</li>
+<li><strong>Use parameterized queries</strong> - This is your primary defense</li>
+<li><strong>Apply least privilege</strong> - Limit database permissions</li>
+<li><strong>Keep software updated</strong> - Patch known vulnerabilities</li>
+<li><strong>Monitor and log</strong> - Detect suspicious database activity</li>
+</ol>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention Cheat Sheet</a></li>
+<li><a href="https://portswigger.net/web-security/sql-injection">PortSwigger Web Security Academy</a></li>
+<li><a href="https://hackerone.com/hacktivity?querystring=sqli">HackerOne SQLi Reports</a></li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>SQL Injection remains a critical threat, but it&rsquo;s entirely preventable with proper coding practices. The key is to never construct SQL queries using string concatenation with user input. Always use parameterized queries and implement multiple layers of defense.</p>
+<p>Stay curious, stay secure!</p>
+
+    </div>
+</article>
+
+        </main>
+        <footer>
+    <p>&copy; 2025 yad0. All rights reserved.</p>
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> & Custom Cyber Theme</p>
+</footer>
+    </div>
+    <script src="/%3cYOUR_REPOSITORY_NAME%3e/js/main.js"></script>
+</body>
+</html>

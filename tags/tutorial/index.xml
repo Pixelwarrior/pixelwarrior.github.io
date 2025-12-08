@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tutorial on yad0::security</title>
+    <link>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/tags/tutorial/</link>
+    <description>Recent content in Tutorial on yad0::security</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 04 Dec 2025 22:09:50 -0600</lastBuildDate>
+    <atom:link href="https://<YOUR_GITHUB_USERNAME>.github.io/%3CYOUR_REPOSITORY_NAME%3E/tags/tutorial/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SQL Injection 101: Understanding the Basics</title>
+      <link>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/posts/sql-injection-101/</link>
+      <pubDate>Thu, 04 Dec 2025 22:09:50 -0600</pubDate>
+      <guid>https://&lt;YOUR_GITHUB_USERNAME&gt;.github.io/%3CYOUR_REPOSITORY_NAME%3E/posts/sql-injection-101/</guid>
+      <description>&lt;p&gt;SQL Injection (SQLi) remains one of the most critical web application vulnerabilities, consistently ranking in the OWASP Top 10. In this post, we&amp;rsquo;ll explore what SQL injection is, how it works, and how to protect against it.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-sql-injection&#34;&gt;What is SQL Injection?&lt;/h2&gt;&#xA;&lt;p&gt;SQL Injection is a code injection technique that exploits vulnerabilities in an application&amp;rsquo;s database layer. Attackers can manipulate SQL queries by inserting malicious SQL code through user input fields.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
