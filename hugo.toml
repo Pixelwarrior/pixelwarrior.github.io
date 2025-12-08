@@ -1,5 +1,5 @@
 # Base configuration for GitHub Pages deployment
-baseURL = 'https://pixelwarrior.github.io/'
+baseURL = 'https://blog.ret2libc.org/'
 languageCode = 'en-us'
 title = 'yad0::security'
 theme = 'cybertech'
