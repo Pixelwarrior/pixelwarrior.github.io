@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>yad0::security</title>
-    <link>https://pixelwarrior.github.io/yad0.github.io/</link>
+    <link>https://pixelwarrior.github.io/</link>
     <description>Recent content on yad0::security</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 04 Dec 2025 22:10:26 -0600</lastBuildDate>
-    <atom:link href="https://pixelwarrior.github.io/yad0.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pixelwarrior.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Cross-Site Scripting (XSS) Attacks Explained</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/posts/xss-attacks-explained/</link>
+      <link>https://pixelwarrior.github.io/posts/xss-attacks-explained/</link>
       <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/posts/xss-attacks-explained/</guid>
+      <guid>https://pixelwarrior.github.io/posts/xss-attacks-explained/</guid>
       <description>&lt;p&gt;Cross-Site Scripting (XSS) is one of the most prevalent web application vulnerabilities. Let&amp;rsquo;s dive into what XSS is, the different types, and how to defend against them.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-xss&#34;&gt;What is XSS?&lt;/h2&gt;&#xA;&lt;p&gt;XSS attacks occur when an attacker injects malicious scripts (usually JavaScript) into web pages viewed by other users. These scripts execute in the victim&amp;rsquo;s browser context, potentially stealing data, hijacking sessions, or defacing websites.&lt;/p&gt;&#xA;&lt;h2 id=&#34;types-of-xss&#34;&gt;Types of XSS&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-reflected-xss-non-persistent&#34;&gt;1. Reflected XSS (Non-Persistent)&lt;/h3&gt;&#xA;&lt;p&gt;The malicious script comes from the current HTTP request. It&amp;rsquo;s &amp;ldquo;reflected&amp;rdquo; back to the user.&lt;/p&gt;</description>
     </item>
     <item>
       <title>SQL Injection 101: Understanding the Basics</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/posts/sql-injection-101/</link>
+      <link>https://pixelwarrior.github.io/posts/sql-injection-101/</link>
       <pubDate>Thu, 04 Dec 2025 22:09:50 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/posts/sql-injection-101/</guid>
+      <guid>https://pixelwarrior.github.io/posts/sql-injection-101/</guid>
       <description>&lt;p&gt;SQL Injection (SQLi) remains one of the most critical web application vulnerabilities, consistently ranking in the OWASP Top 10. In this post, we&amp;rsquo;ll explore what SQL injection is, how it works, and how to protect against it.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-sql-injection&#34;&gt;What is SQL Injection?&lt;/h2&gt;&#xA;&lt;p&gt;SQL Injection is a code injection technique that exploits vulnerabilities in an application&amp;rsquo;s database layer. Attackers can manipulate SQL queries by inserting malicious SQL code through user input fields.&lt;/p&gt;</description>
     </item>
     <item>
       <title>About</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/about/</link>
+      <link>https://pixelwarrior.github.io/about/</link>
       <pubDate>Thu, 04 Dec 2025 22:00:00 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/about/</guid>
+      <guid>https://pixelwarrior.github.io/about/</guid>
       <description>&lt;h2 id=&#34;yad0security&#34;&gt;yad0::security&lt;/h2&gt;&#xA;&lt;p&gt;Welcome to my security research blog where I document vulnerabilities, exploitation techniques, and defensive security practices.&lt;/p&gt;&#xA;&lt;h3 id=&#34;what-youll-find-here&#34;&gt;What You&amp;rsquo;ll Find Here&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Vulnerability Research&lt;/strong&gt; - Deep dives into security flaws&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Exploitation Techniques&lt;/strong&gt; - Practical attack demonstrations&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Security Tools&lt;/strong&gt; - Tool reviews and usage guides&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;CTF Writeups&lt;/strong&gt; - Challenge solutions and methodologies&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Code Analysis&lt;/strong&gt; - Secure and insecure coding patterns&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;focus-areas&#34;&gt;Focus Areas&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Web Application Security&lt;/li&gt;&#xA;&lt;li&gt;Binary Exploitation&lt;/li&gt;&#xA;&lt;li&gt;Network Penetration Testing&lt;/li&gt;&#xA;&lt;li&gt;Cryptographic Attacks&lt;/li&gt;&#xA;&lt;li&gt;Malware Analysis&lt;/li&gt;&#xA;&lt;li&gt;Red Team Operations&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;about-me&#34;&gt;About Me&lt;/h3&gt;&#xA;&lt;p&gt;I&amp;rsquo;m yad0, a security researcher focused on offensive security and vulnerability discovery. This blog serves as a knowledge base for the security community.&lt;/p&gt;</description>
     </item>
   </channel>

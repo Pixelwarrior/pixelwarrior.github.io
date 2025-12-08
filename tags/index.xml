@@ -2,52 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on yad0::security</title>
-    <link>https://pixelwarrior.github.io/yad0.github.io/tags/</link>
+    <link>https://pixelwarrior.github.io/tags/</link>
     <description>Recent content in Tags on yad0::security</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 04 Dec 2025 22:10:26 -0600</lastBuildDate>
-    <atom:link href="https://pixelwarrior.github.io/yad0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pixelwarrior.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Javascript</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/tags/javascript/</link>
+      <link>https://pixelwarrior.github.io/tags/javascript/</link>
       <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/tags/javascript/</guid>
+      <guid>https://pixelwarrior.github.io/tags/javascript/</guid>
       <description></description>
     </item>
     <item>
       <title>Vulnerabilities</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/tags/vulnerabilities/</link>
+      <link>https://pixelwarrior.github.io/tags/vulnerabilities/</link>
       <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/tags/vulnerabilities/</guid>
+      <guid>https://pixelwarrior.github.io/tags/vulnerabilities/</guid>
       <description></description>
     </item>
     <item>
       <title>Web-Security</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/tags/web-security/</link>
+      <link>https://pixelwarrior.github.io/tags/web-security/</link>
       <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/tags/web-security/</guid>
+      <guid>https://pixelwarrior.github.io/tags/web-security/</guid>
       <description></description>
     </item>
     <item>
       <title>Xss</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/tags/xss/</link>
+      <link>https://pixelwarrior.github.io/tags/xss/</link>
       <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/tags/xss/</guid>
+      <guid>https://pixelwarrior.github.io/tags/xss/</guid>
       <description></description>
     </item>
     <item>
       <title>Sql-Injection</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/tags/sql-injection/</link>
+      <link>https://pixelwarrior.github.io/tags/sql-injection/</link>
       <pubDate>Thu, 04 Dec 2025 22:09:50 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/tags/sql-injection/</guid>
+      <guid>https://pixelwarrior.github.io/tags/sql-injection/</guid>
       <description></description>
     </item>
     <item>
       <title>Tutorial</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/tags/tutorial/</link>
+      <link>https://pixelwarrior.github.io/tags/tutorial/</link>
       <pubDate>Thu, 04 Dec 2025 22:09:50 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/tags/tutorial/</guid>
+      <guid>https://pixelwarrior.github.io/tags/tutorial/</guid>
       <description></description>
     </item>
   </channel>

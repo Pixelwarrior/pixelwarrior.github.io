@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on yad0::security</title>
-    <link>https://pixelwarrior.github.io/yad0.github.io/categories/</link>
+    <link>https://pixelwarrior.github.io/categories/</link>
     <description>Recent content in Categories on yad0::security</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 04 Dec 2025 22:10:26 -0600</lastBuildDate>
-    <atom:link href="https://pixelwarrior.github.io/yad0.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pixelwarrior.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Web Security</title>
-      <link>https://pixelwarrior.github.io/yad0.github.io/categories/web-security/</link>
+      <link>https://pixelwarrior.github.io/categories/web-security/</link>
       <pubDate>Thu, 04 Dec 2025 22:10:26 -0600</pubDate>
-      <guid>https://pixelwarrior.github.io/yad0.github.io/categories/web-security/</guid>
+      <guid>https://pixelwarrior.github.io/categories/web-security/</guid>
       <description></description>
     </item>
   </channel>
