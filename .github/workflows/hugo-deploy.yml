@@ -3,7 +3,10 @@ name: Deploy Hugo site to GitHub Pages
 on:
   push:
     branches:
-      - main # Set this to the branch you push your Hugo source code to
+      - main
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -12,23 +15,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: true # Fetch Hugo themes (optional)
-          fetch-depth: 0    # Fetch all history for .GitInfo and for Shortcodes
+          submodules: true
+          fetch-depth: 0
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest' # Or a specific version, e.g., '0.121.0'
-          # extended: true # Uncomment if you use Hugo Extended features like SCSS
+          hugo-version: 'latest'
+          extended: true
 
       - name: Build Hugo site
-        run: hugo --baseURL "${{ secrets.GH_PAGES_BASE_URL }}"
+        run: hugo
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          # You can specify the branch to publish to, e.g., 'gh-pages' for project pages
-          # or 'main' for user/organization pages (like <username>.github.io).
           publish_branch: gh-pages
