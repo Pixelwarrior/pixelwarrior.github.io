@@ -19,7 +19,11 @@
                 {{ end }}
             </div>
             <div class="post-summary">
-                {{ .Summary }}
+                {{ if .Params.description }}
+                    {{ .Params.description }}
+                {{ else }}
+                    {{ .Summary | plainify | htmlUnescape }}
+                {{ end }}
             </div>
             <a href="{{ .Permalink }}" class="read-more">Read Protocol >></a>
         </li>
