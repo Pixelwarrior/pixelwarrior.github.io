@@ -12,7 +12,6 @@ categories:
 testing formatting.
 
 ```
-
 import requests
 def main():
     print("Test")
