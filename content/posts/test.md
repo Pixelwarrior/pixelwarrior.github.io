@@ -18,3 +18,11 @@ def main():
 if __name__=='__main__':
     main()
 ```
+
+```python
+import requests
+def main():
+    print("Test")
+if __name__=='__main__':
+    main()
+```
