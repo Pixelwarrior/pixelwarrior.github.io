@@ -11,12 +11,13 @@ categories:
 ---
 testing formatting.
 
-```
+```python
 import requests
 def main():
     print("Test")
 if __name__=='__main__':
     main()
+    
 ```
 
 ```python
@@ -25,4 +26,5 @@ def main():
     print("Test")
 if __name__=='__main__':
     main()
+    
 ```
