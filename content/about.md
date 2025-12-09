@@ -8,7 +8,13 @@ draft: false
 
 Welcome to my security research blog where I document vulnerabilities, exploitation techniques, and defensive security practices.
 
+---
 
+Current Certifications:
+
+OSCP, OSWA, A+, Network+, Security+, CEH, 
+ITIL® Foundation, 
+Linux Essentials Certification
 
 ---
 
