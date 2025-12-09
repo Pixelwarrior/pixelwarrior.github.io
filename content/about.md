@@ -21,4 +21,4 @@ Linux Essentials Certification
 
 - - -
 
-:-)
+Stay informed.
