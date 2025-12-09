@@ -12,4 +12,4 @@ Welcome to my security research blog where I document vulnerabilities, exploitat
 
 ---
 
-:)
+:-)
