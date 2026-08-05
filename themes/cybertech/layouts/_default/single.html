@@ -1,21 +1,86 @@
 {{ define "main" }}
-<article class="post">
+{{- $showToc := and (default true .Site.Params.showToc) (ne .Params.toc false) (gt (len .TableOfContents) 60) }}
+
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ "/" | relURL }}">Home</a></li>
+      {{- /* Root-level pages report the home page as their section; showing it
+             would render the site title as a phantom breadcrumb. */ -}}
+      {{- with .CurrentSection }}{{ if and .Title (not .IsHome) }}
+      <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+      {{ end }}{{- end }}
+      <li aria-current="page">{{ .Title }}</li>
+    </ol>
+  </nav>
+
+  <article class="post {{ if $showToc }}has-toc{{ end }}">
     <header class="post-header">
-        <h1>{{ .Title }}</h1>
-        <div class="post-meta">
-            <span>{{ .Date.Format "Jan 2, 2006" }}</span>
-            | <span>Authored by {{ .Site.Params.author }}</span>
-            {{ if .Params.tags }}
-            | Tags: 
-            {{ range .Params.tags }}
-            <a href="{{ "tags/" | relURL }}{{ . | urlize }}">#{{ . }}</a>
-            {{ end }}
-            {{ end }}
-        </div>
+      <h1 class="post-title">{{ .Title }}</h1>
+      {{- with .Description }}<p class="post-lede">{{ . }}</p>{{ end }}
+      <div class="post-byline">
+        {{ partial "post-meta.html" . }}
+        {{- with .Params.tags }}
+        <ul class="tag-list">
+          {{- range . }}
+          <li><a class="tag" href="{{ "tags/" | relURL }}{{ . | urlize }}/">#{{ . }}</a></li>
+          {{- end }}
+        </ul>
+        {{- end }}
+      </div>
     </header>
 
+    {{- if $showToc }}
+    <aside class="toc" aria-label="Table of contents">
+      <h2 class="toc-title">Contents</h2>
+      {{ .TableOfContents }}
+    </aside>
+    {{- end }}
+
     <div class="post-content">
-        {{ .Content }}
+      {{ .Content }}
     </div>
-</article>
+
+    <footer class="post-footer">
+      {{- if not .Lastmod.IsZero }}{{ if gt (.Lastmod.Sub .Date).Hours 24 }}
+      <p class="post-updated">Last updated {{ .Lastmod.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}.</p>
+      {{ end }}{{- end }}
+
+      <div class="post-share">
+        <span class="share-label">Share</span>
+        {{- $u := .Permalink -}}
+        {{- $t := .Title -}}
+        <a href="https://x.com/intent/tweet?text={{ $t }}&url={{ $u }}" rel="noopener" target="_blank">X</a>
+        <a href="https://bsky.app/intent/compose?text={{ printf "%s %s" $t $u | urlquery }}" rel="noopener" target="_blank">Bluesky</a>
+        <a href="https://news.ycombinator.com/submitlink?u={{ $u }}&t={{ $t }}" rel="noopener" target="_blank">Hacker News</a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $u }}" rel="noopener" target="_blank">LinkedIn</a>
+      </div>
+    </footer>
+  </article>
+
+  {{- $related := first (default 3 .Site.Params.relatedCount) (.Site.RegularPages.Related .) }}
+  {{- with $related }}
+  <section class="section related">
+    <h2 class="section-title"><span class="section-prompt" aria-hidden="true">&gt;</span> Related</h2>
+    <div class="card-grid">
+      {{- range . }}{{ partial "post-card.html" . }}{{ end }}
+    </div>
+  </section>
+  {{- end }}
+
+  <nav class="post-nav" aria-label="Post navigation">
+    {{- with .PrevInSection }}
+    <a class="post-nav-item post-nav-prev" href="{{ .Permalink }}">
+      <span class="post-nav-label">← Previous</span>
+      <span class="post-nav-title">{{ .Title }}</span>
+    </a>
+    {{- end }}
+    {{- with .NextInSection }}
+    <a class="post-nav-item post-nav-next" href="{{ .Permalink }}">
+      <span class="post-nav-label">Next →</span>
+      <span class="post-nav-title">{{ .Title }}</span>
+    </a>
+    {{- end }}
+  </nav>
+</div>
 {{ end }}

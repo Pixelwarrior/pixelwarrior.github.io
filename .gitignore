@@ -1,5 +1,9 @@
-public
-resources
+public/
+resources/
 .hugo_build.lock
+
 .DS_Store
-themes/cybertech/.DS_Store
+**/.DS_Store
+*.swp
+.idea/
+.vscode/

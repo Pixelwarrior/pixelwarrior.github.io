@@ -1,0 +1,10 @@
+{{- /* Emitted on a single line with whitespace trimmed: a trailing newline here
+       becomes a visible space before following punctuation ("see Posts ."). */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $external := and $u.Host (ne $u.Host (urls.Parse .Page.Site.BaseURL).Host) -}}
+{{- printf `<a href="%s"%s%s>%s</a>`
+    (.Destination | safeURL)
+    (cond (ne .Title "") (printf ` title="%s"` .Title) "")
+    (cond $external ` target="_blank" rel="noopener noreferrer"` "")
+    .Text
+  | safeHTML -}}

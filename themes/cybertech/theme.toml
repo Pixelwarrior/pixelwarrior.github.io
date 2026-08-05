@@ -1,11 +1,9 @@
 name = "CyberTech"
 license = "MIT"
-description = "A dark cybersecurity-focused theme with syntax highlighting and modern features"
-homepage = "https://github.com/yad0/cybertech"
-tags = ["dark", "cybersecurity", "technical", "blog", "terminal"]
-features = ["syntax-highlighting", "search", "tags", "responsive"]
-min_version = "0.100.0"
+description = "Dark, monospace-accented theme for security research writing. Generated social cards, full SEO layer, client-side search, and shortcodes for callouts, CVEs, and terminal sessions. No third-party requests."
+tags = ["dark", "security", "technical", "blog", "terminal"]
+features = ["seo", "open-graph", "generated-social-cards", "search", "toc", "syntax-highlighting", "shortcodes", "rss", "responsive", "accessible"]
+min_version = "0.164.0"
 
 [author]
   name = "yad0"
-  homepage = "https://yad0.io"

@@ -1,0 +1,19 @@
+{{- /* {{< terminal host="attacker@kali" >}} ... raw session text ... {{< /terminal >}}
+       Lines starting with $ or # are treated as prompts and get an accent. */ -}}
+{{- $host := default "shell" (.Get "host") -}}
+<div class="terminal">
+  <div class="terminal-bar">
+    <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="terminal-host">{{ $host }}</span>
+  </div>
+  <pre class="terminal-body"><code>
+  {{- range $i, $line := split (trim .Inner "\n") "\n" -}}
+    {{- $t := trim $line " " -}}
+    {{- if or (hasPrefix $t "$ ") (hasPrefix $t "# ") -}}
+<span class="term-cmd"><span class="term-prompt">{{ substr $t 0 1 }}</span>{{ substr $t 1 }}</span>
+    {{- else -}}
+<span class="term-out">{{ $line }}</span>
+    {{- end }}
+  {{- end -}}
+  </code></pre>
+</div>

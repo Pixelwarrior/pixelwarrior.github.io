@@ -1,0 +1,7 @@
+{{- /* {{< details summary="Full exploit chain" >}} ... {{< /details >}} */ -}}
+<details class="details">
+  <summary>{{ default "Show more" (.Get "summary") }}</summary>
+  <div class="details-body">
+    {{ .Page.RenderString (dict "display" "block") .Inner }}
+  </div>
+</details>

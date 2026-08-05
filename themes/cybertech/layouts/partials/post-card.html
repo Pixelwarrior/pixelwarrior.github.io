@@ -1,0 +1,20 @@
+{{- /* Summary must be plainified — otherwise raw code blocks leak into the card. */ -}}
+{{- $desc := .Description -}}
+{{- if not $desc -}}{{- $desc = .Summary | plainify | htmlUnescape | chomp | truncate 180 -}}{{- end -}}
+
+<article class="post-card">
+  {{ partial "post-meta.html" . }}
+  {{- /* The title link is stretched over the whole card in CSS, so the card is
+         clickable without adding a second link for screen readers to announce. */}}
+  <h3 class="post-card-title"><a class="stretched" href="{{ .Permalink }}">{{ .Title }}</a></h3>
+  {{- with $desc }}
+  <p class="post-card-summary">{{ . }}</p>
+  {{- end }}
+  {{- with .Params.tags }}
+  <ul class="tag-list">
+    {{- range . }}
+    <li><a class="tag" href="{{ "tags/" | relURL }}{{ . | urlize }}/">#{{ . }}</a></li>
+    {{- end }}
+  </ul>
+  {{- end }}
+</article>

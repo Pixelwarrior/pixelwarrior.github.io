@@ -1,0 +1,17 @@
+{{- /* Markdown images become real figures: lazy-loaded, sized, optionally captioned
+       via the markdown title — ![alt](shot.png "caption"). */ -}}
+{{- $src := .Destination -}}
+{{- $res := "" -}}
+{{- with .Page.Resources.GetMatch $src }}{{ $res = . }}{{ end -}}
+<figure class="figure">
+  {{- if $res -}}
+    {{- $img := $res -}}
+    {{- if gt $res.Width 1400 }}{{ $img = $res.Resize "1400x webp q88" }}{{ end }}
+    <a href="{{ $res.Permalink }}" class="figure-zoom" aria-label="View full size">
+      <img src="{{ $img.RelPermalink }}" alt="{{ .Text }}" width="{{ $img.Width }}" height="{{ $img.Height }}" loading="lazy" decoding="async">
+    </a>
+  {{- else -}}
+    <img src="{{ $src | safeURL }}" alt="{{ .Text }}" loading="lazy" decoding="async">
+  {{- end }}
+  {{- with .Title }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>

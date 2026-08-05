@@ -1,0 +1,5 @@
+{{- partial "callout.html" (dict
+    "type" "tip"
+    "title" (.Get "title")
+    "content" (.Page.RenderString (dict "display" "block") .Inner)
+) -}}

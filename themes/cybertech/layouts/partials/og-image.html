@@ -1,0 +1,59 @@
+{{- /*
+  Resolves the social-card image for a page and returns an absolute URL.
+
+  Order of preference:
+    1. An explicit `image:` in the page front matter (bundle resource or static path).
+    2. A branded card generated at build time from the page title.
+    3. The site-wide default, if one is configured.
+
+  Generated cards mean every link shared to X / LinkedIn / Mastodon / Slack
+  renders as a titled, branded card instead of a blank grey box.
+*/ -}}
+
+{{- $out := "" -}}
+
+{{- with .Params.image -}}
+  {{- $res := "" -}}
+  {{- if $.Resources -}}{{- $res = $.Resources.GetMatch . -}}{{- end -}}
+  {{- $out = cond (ne $res "") $res.Permalink (. | absURL) -}}
+{{- end -}}
+
+{{- if not $out -}}
+  {{- $font := resources.Get "fonts/og-title.ttf" -}}
+  {{- $base := resources.Get "img/og-base.png" -}}
+  {{- if and $font $base -}}
+
+    {{- /* Eyebrow label, by section. */ -}}
+    {{- $label := "SECURITY RESEARCH" -}}
+    {{- if eq .Section "writeups" -}}{{- $label = "WRITEUP" -}}
+    {{- else if eq .Section "posts" -}}{{- $label = "RESEARCH" -}}
+    {{- else if and .Section (not .IsHome) -}}{{- $label = upper .Section -}}
+    {{- end -}}
+
+    {{- $title := cond .IsHome .Site.Title (.Title | truncate 76) -}}
+
+    {{- /* Footer line: byline plus date on posts, tagline elsewhere. */ -}}
+    {{- $foot := .Site.Params.tagline | truncate 64 -}}
+    {{- if and .IsPage (not .Date.IsZero) -}}
+      {{- $foot = printf "%s   ·   %s" .Site.Title (.Date.Format "Jan 2, 2006") -}}
+    {{- end -}}
+
+    {{- $card := $base.Filter (images.Text $label (dict
+          "color" "#00ff41" "size" 27 "x" 80 "y" 86 "font" $font)) -}}
+    {{- $card = $card.Filter (images.Text $title (dict
+          "color" "#f0f6fc" "size" 62 "linespacing" 18
+          "x" 80 "y" 168 "maxWidth" 1020 "font" $font)) -}}
+    {{- $card = $card.Filter (images.Text $foot (dict
+          "color" "#8b949e" "size" 26 "x" 80 "y" 534 "font" $font)) -}}
+
+    {{- /* Stable filename per page so the URL does not churn between builds. */ -}}
+    {{- $card = $card.Resize (printf "1200x png Center #0d1117") -}}
+    {{- $out = $card.Permalink -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $out -}}
+  {{- with .Site.Params.defaultImage -}}{{- $out = . | absURL -}}{{- end -}}
+{{- end -}}
+
+{{- return $out -}}

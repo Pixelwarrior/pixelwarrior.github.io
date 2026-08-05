@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}">
+<html lang="{{ .Site.Language.Locale }}">
 <head>
-    {{ partial "head.html" . }}
+  {{ partial "head.html" . }}
 </head>
-<body>
-    <div class="container">
-        {{ partial "header.html" . }}
-        <main>
-            {{ block "main" . }}{{ end }}
-        </main>
-        {{ partial "footer.html" . }}
-    </div>
-    <script src="{{ "js/main.js" | relURL }}"></script>
+<body class="{{ if .IsHome }}is-home{{ else }}is-{{ .Kind }}{{ end }}">
+  {{ partial "header.html" . }}
+
+  <main id="main" class="site-main">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+  {{ partial "search-modal.html" . }}
+
+  {{- $js := resources.Get "js/main.js" -}}
+  {{- if hugo.IsProduction -}}{{- $js = $js | minify | fingerprint "sha256" -}}{{- end }}
+  <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
 </body>
 </html>

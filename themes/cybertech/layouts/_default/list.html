@@ -1,34 +1,46 @@
 {{ define "main" }}
-    {{ if .IsHome }}
-        <section class="intro">
-            <h1>Welcome, Operator.</h1>
-            <p>{{ .Site.Params.description }}</p>
-        </section>
-    {{ else }}
-        <h1>{{ .Title }}</h1>
-    {{ end }}
+<div class="wrap">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Description }}<p class="page-lede">{{ . }}</p>{{ end }}
+    {{- with .Content }}<div class="page-body">{{ . }}</div>{{ end }}
+    {{- with .OutputFormats.Get "rss" }}
+    <a class="section-feed" href="{{ .Permalink }}">Subscribe to this section via RSS</a>
+    {{- end }}
+  </header>
 
-    <ul class="post-list">
-        {{ range .Paginator.Pages }}
-        <li class="post-item">
-            <h2 class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
-            <div class="post-meta">
-                <span>{{ .Date.Format "Jan 2, 2006" }}</span>
-                {{ if .Params.categories }}
-                | <span>[{{ range .Params.categories }}{{ . }}{{ end }}]</span>
-                {{ end }}
-            </div>
-            <div class="post-summary">
-                {{ if .Params.description }}
-                    {{ .Params.description }}
-                {{ else }}
-                    {{ .Summary | plainify | htmlUnescape }}
-                {{ end }}
-            </div>
-            <a href="{{ .Permalink }}" class="read-more">Read Protocol >></a>
-        </li>
-        {{ end }}
-    </ul>
+  {{- $pages := .Pages }}
+  {{- if .IsSection }}{{ $pages = .RegularPages }}{{ end }}
+  {{- $paginator := .Paginate $pages }}
 
-    {{ template "_internal/pagination.html" . }}
+  {{- if $paginator.Pages }}
+  <ol class="post-index">
+    {{- range $paginator.Pages }}
+    <li class="post-index-item">
+      <div class="post-index-date">
+        {{- if not .Date.IsZero }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+      </div>
+      <div class="post-index-body">
+        <h2 class="post-index-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+        {{- $desc := .Description }}
+        {{- if not $desc }}{{ $desc = .Summary | plainify | htmlUnescape | chomp | truncate 200 }}{{ end }}
+        {{- with $desc }}<p class="post-index-summary">{{ . }}</p>{{ end }}
+        <div class="post-index-meta">
+          {{- if and .Site.Params.showReadingTime .ReadingTime }}<span>{{ .ReadingTime }} min read</span>{{ end }}
+          {{- with .Params.tags }}
+          <ul class="tag-list">
+            {{- range . }}<li><a class="tag" href="{{ "tags/" | relURL }}{{ . | urlize }}/">#{{ . }}</a></li>{{ end }}
+          </ul>
+          {{- end }}
+        </div>
+      </div>
+    </li>
+    {{- end }}
+  </ol>
+
+  {{ partial "pagination.html" . }}
+  {{- else }}
+  <p class="empty-state">Nothing here yet.</p>
+  {{- end }}
+</div>
 {{ end }}

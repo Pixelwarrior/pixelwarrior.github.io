@@ -1,0 +1,23 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    <p class="page-lede">{{ len .Data.Terms }} {{ .Data.Plural }} across {{ len .Site.RegularPages }} pages.</p>
+  </header>
+
+  {{- if .Data.Terms }}
+  <ul class="term-grid">
+    {{- range .Data.Terms.ByCount }}
+    <li>
+      <a class="term" href="{{ .Page.Permalink }}">
+        <span class="term-name">{{ if eq $.Data.Plural "tags" }}#{{ end }}{{ .Page.Title }}</span>
+        <span class="term-count">{{ .Count }}</span>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+  {{- else }}
+  <p class="empty-state">No {{ .Data.Plural }} yet.</p>
+  {{- end }}
+</div>
+{{ end }}

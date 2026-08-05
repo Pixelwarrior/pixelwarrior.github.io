@@ -1,10 +1,32 @@
-<header>
-    <nav>
-        <a href="{{ .Site.BaseURL }}" class="logo">{{ .Site.Title }}</a>
-        <ul class="nav-links">
-            <li><a href="{{ .Site.BaseURL }}">Home</a></li>
-            <li><a href="{{ "posts" | relURL }}">Posts</a></li>
-            <li><a href="{{ "about" | relURL }}">About</a></li>
-        </ul>
-    </nav>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a href="{{ "/" | relURL }}" class="logo" aria-label="{{ .Site.Title }} — home">
+      <span class="logo-prompt" aria-hidden="true">&gt;</span>{{ .Site.Title }}
+    </a>
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+
+    <div class="nav-menu" id="nav-menu">
+      <ul class="nav-links">
+        {{- $cur := . }}
+        {{- range .Site.Menus.main }}
+        {{- $active := or ($cur.IsMenuCurrent "main" .) ($cur.HasMenuCurrent "main" .) }}
+        <li><a href="{{ .URL }}"{{ if $active }} class="is-active" aria-current="page"{{ end }}>{{ .Name }}</a></li>
+        {{- end }}
+      </ul>
+
+      <button class="search-trigger" data-search-open aria-label="Search (press /)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
+        </svg>
+        <kbd aria-hidden="true">/</kbd>
+      </button>
+    </div>
+  </nav>
 </header>

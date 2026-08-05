@@ -1,5 +1,28 @@
-{{- $.Scratch.Add "index" slice -}}
-{{- range where .Site.RegularPages "Type" "posts" -}}
-  {{- $.Scratch.Add "index" (dict "title" .Title "url" .Permalink "tags" .Params.tags "content" .Summary "date" .Date) -}}
+{{- /* Search index consumed by assets/js/main.js.
+
+     Bodies are indexed in full, not truncated: a truncated index silently fails
+     to find terms that appear late in a long writeup, which is the common case
+     here. Code blocks are included on purpose so function names, offsets and
+     CVE IDs are searchable.
+
+     The file is fetched lazily on first search and cached, and text gzips to
+     roughly a quarter of its size. If it ever grows uncomfortably large, cap
+     `body` rather than dropping fields — the title and tag weighting carries
+     most result quality.
+*/ -}}
+{{- $index := slice -}}
+{{- range where .Site.RegularPages "Kind" "page" -}}
+  {{- if and (not .Params.private) (ne .Layout "search") -}}
+    {{- $body := .Plain | htmlUnescape | replaceRE `\s+` " " | chomp -}}
+    {{- $index = $index | append (dict
+        "title"   .Title
+        "url"     .RelPermalink
+        "section" .Section
+        "date"    (.Date.Format "2006-01-02")
+        "tags"    (default (slice) .Params.tags)
+        "summary" (cond (ne .Description "") .Description ($body | truncate 180))
+        "body"    $body
+    ) -}}
+  {{- end -}}
 {{- end -}}
-{{- $.Scratch.Get "index" | jsonify -}}
+{{- $index | jsonify -}}

@@ -1,0 +1,16 @@
+{{ define "main" }}
+<div class="wrap">
+  <section class="notfound">
+    <p class="notfound-code" aria-hidden="true">404</p>
+    <h1 class="notfound-title">Segmentation fault</h1>
+    <p class="notfound-body">
+      That address isn't mapped. The page may have moved, or the link may be stale.
+    </p>
+    <div class="notfound-actions">
+      <a class="btn btn-primary" href="{{ "/" | relURL }}">Return home</a>
+      <a class="btn btn-ghost" href="{{ "posts/" | relURL }}">Browse posts</a>
+      <button class="btn btn-ghost" data-search-open type="button">Search</button>
+    </div>
+  </section>
+</div>
+{{ end }}

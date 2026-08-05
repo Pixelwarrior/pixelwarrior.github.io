@@ -1,4 +1,37 @@
-<footer>
-    <p>&copy; {{ now.Format "2006" }} {{ .Site.Params.author }}. All rights reserved.</p>
-    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a></p>
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="footer-logo"><span aria-hidden="true">&gt;</span>{{ .Site.Title }}</span>
+      {{- with .Site.Params.author_meta.bio }}
+      <p class="footer-bio">{{ . }}</p>
+      {{- end }}
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <h2 class="footer-heading">Navigate</h2>
+      <ul>
+        {{- range .Site.Menus.main }}
+        <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{- end }}
+      </ul>
+    </nav>
+
+    <div class="footer-connect">
+      <h2 class="footer-heading">Connect</h2>
+      {{ partial "social-links.html" . }}
+      {{- with .OutputFormats.Get "rss" }}
+      <a class="footer-rss" href="{{ .Permalink }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <circle cx="5.5" cy="18.5" r="2.5"/><path d="M3 10.5v3.2a7.3 7.3 0 017.3 7.3h3.2A10.5 10.5 0 003 10.5z"/><path d="M3 4v3.2A13.8 13.8 0 0116.8 21H20A17 17 0 003 4z"/>
+        </svg>
+        Subscribe via RSS
+      </a>
+      {{- end }}
+    </div>
+  </div>
+
+  <div class="footer-legal">
+    <p>&copy; {{ now.Format "2006" }} {{ .Site.Params.author }}. Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>.</p>
+    <p class="footer-colophon">Built with <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo</a>. No trackers, no third-party requests.</p>
+  </div>
 </footer>

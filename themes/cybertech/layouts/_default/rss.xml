@@ -1,0 +1,58 @@
+{{- /* Custom feed. Hugo's built-in RSS template emits every regular page, which
+       puts About / Now / Search in the feed alongside actual writing. Subscribers
+       want posts and writeups, so the home feed is filtered to those sections.
+       Section and taxonomy feeds carry their own pages unchanged.
+
+       Full article HTML ships in <content:encoded> so the feed is readable
+       inside an RSS client without a round trip to the site. */ -}}
+{{- $pages := .Pages -}}
+{{- if .IsHome -}}
+  {{- $pages = where .Site.RegularPages "Section" "in" (slice "posts" "writeups" "tools") -}}
+{{- else if .IsSection -}}
+  {{- $pages = .RegularPages -}}
+{{- end -}}
+{{- /* Filter by identity, not `where ... "Params.private"` — that form drops
+       pages that simply lack the key, which is nearly all of them. */ -}}
+{{- $visible := slice -}}
+{{- range $pages }}{{ if not .Params.private }}{{ $visible = $visible | append . }}{{ end }}{{ end -}}
+{{- $pages = $visible -}}
+{{- $limit := default 30 .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}{{- $pages = first $limit $pages -}}{{- end -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ with .Description }}{{ . }}{{ else }}{{ .Title }}{{ end }}{{ end }}</description>
+    <generator>Hugo</generator>
+    <language>{{ .Site.Language.Locale }}</language>
+    {{- with .Site.Params.author }}
+    <managingEditor>{{ . }}</managingEditor>
+    <webMaster>{{ . }}</webMaster>
+    {{- end }}
+    <copyright>© {{ now.Format "2006" }} {{ .Site.Params.author }} — CC BY 4.0</copyright>
+    {{- with (index $pages 0) }}
+    <lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    {{ with .OutputFormats.Get "RSS" -}}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{ range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid isPermaLink="true">{{ .Permalink }}</guid>
+      {{- with .Site.Params.author }}<dc:creator>{{ . }}</dc:creator>{{ end }}
+      {{- range .Params.categories }}
+      <category>{{ . }}</category>
+      {{- end }}
+      {{- range .Params.tags }}
+      <category>{{ . }}</category>
+      {{- end }}
+      <description>{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | htmlUnescape | chomp | truncate 300 }}{{ end }}</description>
+      <content:encoded>{{ printf "<![CDATA[%s]]>" .Content | safeHTML }}</content:encoded>
+    </item>
+    {{ end }}
+  </channel>
+</rss>

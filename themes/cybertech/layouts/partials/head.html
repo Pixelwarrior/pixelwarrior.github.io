@@ -1,10 +1,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0d1117">
 
-<link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
-<link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+{{ partial "seo.html" . }}
+
+{{- /* Self-hosted fonts: no third-party request, nothing leaked, faster first paint. */ -}}
+<link rel="preload" href="{{ "fonts/FiraCode-Regular.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+
+{{- $css := slice (resources.Get "css/style.css") (resources.Get "css/syntax.css") | resources.Concat "css/bundle.css" -}}
+{{- if hugo.IsProduction -}}
+  {{- $css = $css | minify | fingerprint "sha256" -}}
+{{- end }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}"{{ with $css.Data.Integrity }} integrity="{{ . }}"{{ end }}>
+
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+{{- $iconBase := resources.Get "img/og-base.png" -}}
+{{- $iconFont := resources.Get "fonts/og-title.ttf" -}}
+{{- if and $iconBase $iconFont -}}
+  {{- $icon := ($iconBase.Fill "180x180 Center").Filter (images.Text ">_" (dict "color" "#00ff41" "size" 74 "x" 30 "y" 50 "font" $iconFont)) }}
+<link rel="apple-touch-icon" href="{{ $icon.RelPermalink }}">
+{{- end }}

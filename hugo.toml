@@ -1,20 +1,88 @@
-# Base configuration for GitHub Pages deployment
 baseURL = 'https://blog.ret2libc.org/'
-languageCode = 'en-us'
+locale = 'en-US'
 title = 'yad0::security'
 theme = 'cybertech'
+enableRobotsTXT = true
+summaryLength = 30
+
+# No [permalinks] block on purpose: Hugo's default already gives
+# /posts/<filename>/ and honours a `slug:` override in front matter. A
+# :slug pattern here would derive URLs from the title instead, so a long
+# headline would become a long, brittle URL.
+
+[pagination]
+  pagerSize = 10
 
 [params]
-  description = 'Security research, vulnerability analysis, and exploitation techniques'
+  description = 'Security research, vulnerability analysis, and exploitation techniques.'
   author = 'yad0'
+  # Shown on the homepage hero. Also the Open Graph description fallback.
+  tagline = 'Security research, vulnerability analysis, and exploitation techniques.'
+  # Fallback Open Graph / Twitter card image when a post has none of its own.
+  defaultImage = 'img/og-default.png'
+  dateFormat = 'Jan 2, 2006'
+  showReadingTime = true
+  showToc = true
+  relatedCount = 3
+
+  [params.author_meta]
+    name = 'yad0'
+    # Used in JSON-LD and on the about page.
+    bio = 'Offensive security researcher. OSCP, OSWA, OSEP in progress. I break things and write down how.'
+
+  # ---------------------------------------------------------------------------
+  # SOCIAL LINKS — fill these in. Any left empty are simply not rendered.
+  # `twitter` is the handle WITHOUT the @ (also used for Twitter card meta).
+  # ---------------------------------------------------------------------------
+  [params.social]
+    github = 'Pixelwarrior'
+    twitter = ''
+    mastodon = ''
+    linkedin = ''
+    bluesky = ''
+    email = ''
+
+[menus]
+  [[menus.main]]
+    name = 'Posts'
+    pageRef = '/posts'
+    weight = 10
+  [[menus.main]]
+    name = 'Writeups'
+    pageRef = '/writeups'
+    weight = 20
+  [[menus.main]]
+    name = 'Tools'
+    pageRef = '/tools'
+    weight = 30
+  [[menus.main]]
+    name = 'Tags'
+    pageRef = '/tags'
+    weight = 40
+  [[menus.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 50
 
 [markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      # Required for the details/terminal/figure shortcodes to emit real markup.
+      unsafe = true
+    [markup.goldmark.parser.attribute]
+      block = true
+      title = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = false
   [markup.highlight]
     anchorLineNos = false
     codeFences = true
     guessSyntax = true
     lineNos = true
-    lineNumbersInTable = false
+    # Table layout keeps line numbers out of text selection and copy.
+    lineNumbersInTable = true
     noClasses = false
     style = 'monokai'
     tabWidth = 4
@@ -25,3 +93,32 @@ theme = 'cybertech'
 
 [outputs]
   home = ['HTML', 'RSS', 'JSON']
+  section = ['HTML', 'RSS']
+
+# Powers the "related posts" block at the foot of each post.
+[related]
+  includeNewer = true
+  threshold = 40
+  toLower = true
+  [[related.indices]]
+    name = 'tags'
+    weight = 100
+  [[related.indices]]
+    name = 'categories'
+    weight = 70
+  [[related.indices]]
+    name = 'date'
+    weight = 10
+
+[sitemap]
+  changefreq = 'weekly'
+  filename = 'sitemap.xml'
+  priority = 0.5
+
+[minify]
+  disableHTML = false
+  [minify.tdewolff.html]
+    keepQuotes = true
+
+[services.rss]
+  limit = 30

@@ -1,0 +1,14 @@
+{{- $fmt := default "Jan 2, 2006" .Site.Params.dateFormat -}}
+<div class="post-meta">
+  {{- if not .Date.IsZero }}
+  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format $fmt }}</time>
+  {{- end }}
+  {{- if and .Site.Params.showReadingTime .ReadingTime }}
+  <span class="meta-sep" aria-hidden="true">·</span>
+  <span>{{ .ReadingTime }} min read</span>
+  {{- end }}
+  {{- with .Params.categories }}
+  <span class="meta-sep" aria-hidden="true">·</span>
+  <span class="meta-cat">{{ delimit . ", " }}</span>
+  {{- end }}
+</div>

@@ -1,0 +1,17 @@
+{{- /* ctx: type, title, content (already rendered HTML) */ -}}
+{{- $type := default "note" .type -}}
+{{- $labels := dict "note" "Note" "tip" "Tip" "warning" "Warning" "danger" "Danger" "lab" "Lab setup" -}}
+{{- $title := default (index $labels $type | default "Note") .title -}}
+<aside class="callout callout-{{ $type }}" role="note">
+  <p class="callout-title">
+    <span class="callout-icon" aria-hidden="true">
+      {{- if eq $type "danger" }}!!
+      {{- else if eq $type "warning" }}!
+      {{- else if eq $type "tip" }}*
+      {{- else if eq $type "lab" }}#
+      {{- else }}i{{ end -}}
+    </span>
+    {{ $title }}
+  </p>
+  <div class="callout-body">{{ .content }}</div>
+</aside>

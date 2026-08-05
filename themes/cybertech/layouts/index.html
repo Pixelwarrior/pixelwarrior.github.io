@@ -1,33 +1,51 @@
 {{ define "main" }}
-<div class="home-hero">
-    <h1 class="glitch" data-text="{{ .Site.Title }}">{{ .Site.Title }}</h1>
-    <p class="hero-subtitle">{{ .Site.Params.description }}</p>
-</div>
-
-<section class="recent-posts">
-    <h2 class="section-title">&gt; Recent Posts</h2>
-    <div class="posts-grid">
-        {{ range first 6 (where .Site.RegularPages "Type" "posts") }}
-        <article class="post-card">
-            <div class="post-meta">
-                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02, 2006" }}</time>
-                {{ if .Params.tags }}
-                <div class="tags">
-                    {{ range .Params.tags }}
-                    <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">#{{ . }}</a>
-                    {{ end }}
-                </div>
-                {{ end }}
-            </div>
-            <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-            <p class="post-summary">{{ .Summary }}</p>
-            <a href="{{ .Permalink }}" class="read-more">Read more →</a>
-        </article>
-        {{ end }}
+<section class="hero">
+  <div class="wrap">
+    <p class="hero-eyebrow"><span aria-hidden="true">$</span> whoami</p>
+    <h1 class="hero-title">{{ .Site.Title }}</h1>
+    <p class="hero-tagline">{{ default .Site.Params.description .Site.Params.tagline }}</p>
+    {{- with .Content }}<div class="hero-body">{{ . }}</div>{{- end }}
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ "posts/" | relURL }}">Read the research</a>
+      {{- with .OutputFormats.Get "rss" }}
+      <a class="btn btn-ghost" href="{{ .Permalink }}">RSS</a>
+      {{- end }}
     </div>
+  </div>
 </section>
 
-<div class="view-all">
-    <a href="{{ "/posts" | relURL }}" class="btn-primary">View All Posts</a>
+{{- $posts := where .Site.RegularPages "Section" "in" (slice "posts" "writeups") }}
+
+<div class="wrap">
+  {{- with first 6 $posts }}
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title"><span class="section-prompt" aria-hidden="true">&gt;</span> Latest</h2>
+      <a class="section-more" href="{{ "posts/" | relURL }}">All posts →</a>
+    </div>
+    <div class="card-grid">
+      {{- range . }}{{ partial "post-card.html" . }}{{ end }}
+    </div>
+  </section>
+  {{- else }}
+  <section class="section">
+    <p class="empty-state">No posts published yet.</p>
+  </section>
+  {{- end }}
+
+  {{- $tags := .Site.Taxonomies.tags }}
+  {{- if $tags }}
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title"><span class="section-prompt" aria-hidden="true">&gt;</span> Topics</h2>
+      <a class="section-more" href="{{ "tags/" | relURL }}">All tags →</a>
+    </div>
+    <ul class="tag-list tag-list-lg">
+      {{- range first 14 $tags.ByCount }}
+      <li><a class="tag" href="{{ .Page.Permalink }}">#{{ .Page.Title }} <span class="tag-count">{{ .Count }}</span></a></li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
 </div>
 {{ end }}
